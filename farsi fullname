@@ -1,0 +1,62 @@
+#c:\Python27\python.exe
+# -*- coding: utf-8 -*-
+
+
+import MySQLdb
+from sets import Set
+import sets
+
+db= MySQLdb.connect(host="localhost",user="root",passwd="root",db="apbi")
+cur = db.cursor()
+
+# Use all the SQL you like
+cur.execute("select userid from axn_sellfile where se_peymentstatus=3 and datekey between 20070101 and 20150923 ")
+
+
+# print all the first cell of all the rows
+
+in94= Set(cur.fetchall()
+)
+
+
+
+cur2=db.cursor()
+
+cur2.execute("select userid from axn_sellfile where se_peymentstatus=3 and datekey between 20150924 and 20160524 ")
+
+in95=Set(cur2.fetchall()
+)
+
+
+
+
+
+
+
+result=Set()
+result=in94.difference(in95)
+
+
+
+
+cur3=db.cursor()
+
+
+cur4=db.cursor()
+
+
+fo= open("fromStartNotInLast8Month.txt","w+")
+
+for x in result:
+	
+	userid=str(x)
+	cur4.execute("select fullname,userid from axn_userfile where userid="+userid.strip('L,()'))
+
+	fullnameid=cur4.fetchone()
+	strfullname=str(fullnameid[0])
+	print(strfullname)
+
+	fo.write(strfullname+","+userid)
+	fo.write("\n")
+
+
